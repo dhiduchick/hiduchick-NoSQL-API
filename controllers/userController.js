@@ -63,7 +63,7 @@ module.exports = {
                 {runValidators: true, new:true}
             )
             if(!user) {
-                return res.status(400).json({message:'No user found with that ID'};)
+                return res.status(400).json({message:'No user found with that ID'});
             }
             res.json(user);
             } catch (err) {
@@ -71,6 +71,20 @@ module.exports = {
             }
         },
 
-        
-    }
-}
+    async deleteFriend(req,res) {
+        try {
+            const user = await User.findOneAndUpdate(
+                {_id: req.params.userId},
+                {$pull: {friends: req.params.friendId}},
+                {runValidators: true, new:true}
+            );
+
+            if(!user) {
+                return res.status(400).json({message: 'No user found with that ID'})
+            }
+            res.json(user);
+        } catch (err) {
+            res.status(500).json(err)
+        }
+    },
+    };
