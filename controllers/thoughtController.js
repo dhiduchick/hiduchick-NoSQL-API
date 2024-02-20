@@ -11,5 +11,20 @@ module.exports = {
         }
     },
 
+    async getSingleThought(req,res) {
+        try {
+            const thought = await Thought.findOne({ _id: req.params.thoughtId})
+            .select('-__V');
+
+            if(!thought) {
+                return res.status(400).json({message: "No thought with that ID"})
+            }
+            res.json(thought);
+        } catch (err) {
+            console.log(err);
+            return res.status(500).json(err);
+        }
+    },
+
     
 }
